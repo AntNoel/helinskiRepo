@@ -2,25 +2,30 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 const Header = ({ course }) => <h1>{course}</h1>;
-const Part = ({ part, exercises }) => {
+const Part = ({ part }) => {
   return (
     <p>
-      {part} {exercises}
+      {part.name} {part.exercises}
     </p>
   );
 };
-const Content = (props) => {
+const Content = ({ parts }) => {
   return (
     <div>
-      <Part />
-      <Part />
-      <Part />
+      {parts.map((part, i) => (
+        <Part key={i} part={part} />
+      ))}
     </div>
   );
 };
-const Total = ({ total }) => {
-  <p>Number of exercises: {total}</p>;
+
+const Total = ({ parts }) => {
+  const total = parts.reduce((acc, part) => {
+    return acc + part.exercises;
+  }, 0);
+  return <p>Number of exercises: {total}</p>;
 };
+
 const App = () => {
   const course = 'Half Stack application development';
   const parts = [
@@ -37,16 +42,6 @@ const App = () => {
       <Header course={course} />
       <Content parts={parts} />
       <Total parts={parts} />
-      {/* <p>
-        {part1} {exercises1}
-      </p>
-      <p>
-        {part2} {exercises2}
-      </p>
-      <p>
-        {part3} {exercises3}
-      </p>
-      <p>Number of exercises: {exercises1 + exercises2 + exercises3}</p> */}
     </div>
   );
 };
